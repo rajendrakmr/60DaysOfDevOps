@@ -46,8 +46,8 @@ Over the next 60 days, I will:
 
 | Day | Topic | Status |
 |---|---|---|
-| 01 | My 60 Days of DevOps Challenge | ⬜ |
-| 02 | Essential Linux Commands | ⬜ |
+| 01 | My 60 Days of DevOps Challenge | ✅ |
+| 02 | Essential Linux Commands | ☑️ |
 | 03 | Linux File Permissions | ⬜ |
 | 04 | Linux Process Management | ⬜ |
 | 05 | Linux Disk and Memory Management | ⬜ |
@@ -176,17 +176,8 @@ Over the next 60 days, I will:
 ```text
 60DaysOfDevOps/
 │
-├── README.md
-│
-├── Day-01/
-│   └── README.md
-│
-├── Day-02/
-│   └── README.md
-│
-├── Day-03/
-│   └── README.md
-│
+├── README.md 
+|
 ├── Linux/
 │
 ├── Shell-Scripting/
