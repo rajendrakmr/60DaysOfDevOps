@@ -1,0 +1,44 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: mysql-migrate
+spec:
+  backoffLimit: 3
+  activeDeadlineSeconds: 600
+  ttlSecondsAfterFinished: 3600
+
+  template:
+    spec:
+      restartPolicy: Never 
+      containers:
+        - name: migrate
+          image: mysql:8.4 
+          envFrom:
+            - secretRef:
+                name: demo-job-cron-secret
+            - configMapRef:
+                name: demo-job-cron-config 
+          command: ["sh", "-c"]
+
+          args:
+            - |
+              set -e 
+              echo "Waiting for MySQL..." 
+              until mysqladmin ping -h mysql-svc -uroot -p"$MYSQL_ROOT_PASSWORD" --silent; do
+                sleep 3
+              done 
+              echo "MySQL is ready!" 
+              for f in /migrations/*.sql; do
+                echo "Running $f" 
+                mysql -h mysql-svc -uroot -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_DATABASE" < "$f"
+              done 
+              echo "Migration done"
+
+          volumeMounts:
+            - name: migrations
+              mountPath: /migrations
+
+      volumes:
+        - name: migrations
+          configMap:
+            name: mysql-migrations

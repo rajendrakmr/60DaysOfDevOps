@@ -1,0 +1,42 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: mysql-backup
+spec:
+  schedule: "*/2 * * * *"
+  timeZone: "Asia/Kolkata"
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 2
+      activeDeadlineSeconds: 600
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: backup
+              image: mysql:8.4
+              envFrom:
+                - secretRef:
+                    name: demo-job-cron-secret
+                - configMapRef:
+                    name: demo-job-cron-config
+              command: ["sh", "-c"]
+              args:
+                - |
+                  set -e
+                  F=/backup/$MYSQL_DATABASE-$(date +%F-%H%M).sql.gz
+                  mysqldump -h mysql-0.mysql -uroot -p"$MYSQL_ROOT_PASSWORD" --single-transaction "$MYSQL_DATABASE" | gzip > "$F"
+                  echo "Saved $F"
+                  find /backup -name '*.sql.gz' -mtime +7 -delete
+                  ls -lh /backup
+              volumeMounts:
+                - name: backup
+                  mountPath: /backup
+          volumes:
+            - name: backup
+              hostPath:
+                path: /data
+                type: Directory 
