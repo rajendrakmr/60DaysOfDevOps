@@ -82,13 +82,13 @@ Over the next 60 days, I will:
 
 | Day | Topic | Status |
 |---|---|---|
-| 22 | Kubernetes Architecture | ⬜ |
-| 23 | Kubernetes Pods | ⬜ |
-| 24 | Kubernetes Deployments | ⬜ |
-| 25 | Kubernetes Services | ⬜ |
-| 26 | ConfigMaps vs Secrets | ⬜ |
-| 27 | Kubernetes Health Probes | ⬜ |
-| 28 | Kubernetes Requests, Limits and QoS | ⬜ |
+| 22 | Kubernetes Architecture | ✅ |
+| 23 | Kubernetes Pods | ✅ |
+| 24 | Kubernetes Deployments | ✅ |
+| 25 | Kubernetes Services | ✅ |
+| 26 | ConfigMaps vs Secrets | ✅ |
+| 27 | Kubernetes Health Probes | ✅ |
+| 28 | Kubernetes Requests, Limits and QoS | ✅ |
 
 ## Week 5: Advanced Kubernetes
 
