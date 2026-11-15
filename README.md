@@ -94,11 +94,11 @@ Over the next 60 days, I will:
 
 | Day | Topic | Status |
 |---|---|---|
-| 29 | Node Affinity vs Pod Affinity | ⬜ |
-| 30 | Taints and Tolerations | ⬜ |
+| 29 | Node Affinity vs Pod Affinity | ✅ |
+| 30 | Taints and Tolerations | ✅ |
 | 31 | Horizontal Pod Autoscaler (HPA) | ⬜ |
-| 32 | StatefulSets | ⬜ |
-| 33 | Persistent Volumes and PVCs | ⬜ |
+| 32 | StatefulSets | ✅ |
+| 33 | Persistent Volumes and PVCs | ✅ |
 | 34 | Kubernetes RBAC | ⬜ |
 | 35 | Kubernetes Troubleshooting | ⬜ |
 
@@ -210,7 +210,7 @@ Over the next 60 days, I will:
 | Week 1 | Linux & Shell Scripting | 0/7 |
 | Week 2 | Git, GitHub & Networking | 0/7 |
 | Week 3 | Docker | 0/7 |
-| Week 4 | Kubernetes Fundamentals | 0/7 |
+| Week 4 | Kubernetes Fundamentals | 7/7 |
 | Week 5 | Advanced Kubernetes | 0/7 |
 | Week 6 | CI/CD | 0/7 |
 | Week 7 | DevSecOps | 0/7 |
