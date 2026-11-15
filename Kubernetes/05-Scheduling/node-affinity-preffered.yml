@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ngnix-node-affinity
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: ngnix-node-affinity
+  template:
+    metadata:
+      labels:
+        app: ngnix-node-affinity
+    spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution: # milega toh theek h ni toh kisi bhi node pe schedule karo
+            - weight: 50
+              preference:
+                matchExpressions:
+                  - key: disktype
+                    operator: In
+                    values:
+                      - nvme
+            - weight: 10
+              preference:
+                matchExpressions:
+                  - key: disktype
+                    operator: In
+                    values:
+                      - nvme2
+      containers:
+      - name: nginx
+        image: nginx:latest
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
