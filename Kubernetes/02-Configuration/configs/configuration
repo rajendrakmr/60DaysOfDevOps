@@ -1,0 +1,101 @@
+KUBERNETES CONFIGURATION: IMPERATIVE vs DECLARATIVE
+
+Imperative  =(kubectl create / set / run)  -> fast
+Declarative =(YAML + kubectl apply)       -> repeatable
+
+Note: generate YAML imperatively, then edit and apply it
+
+  kubectl create configmap app-config --from-literal=ENV=prod --dry-run=client -o yaml > cm.yaml
+  kubectl apply -f cm.yaml
+
+1) CONFIGMAP (non-sensitive) 
+IMPERATIVE
+  kubectl create configmap app-config --from-literal=ENV=prod --from-literal=LOG_LEVEL=debug
+  kubectl create configmap app-env --from-env-file=.env
+  kubectl create configmap app-file --from-file=app.properties
+  kubectl get cm app-config -o yaml
+
+DECLARATIVE
+  apiVersion: v1
+  kind: ConfigMap
+  metadata:
+    name: app-config
+  data:
+    ENV: prod
+    LOG_LEVEL: debug
+
+Use in a Pod (3 ways)
+  a) one key as env var   -> env.valueFrom.configMapKeyRef
+  b) all keys as env vars -> envFrom.configMapRef
+  c) as files             -> volumes.configMap + volumeMounts
+
+  Imperative way to inject into a Deployment:
+  kubectl set env deployment/nginx --from=configmap/app-env
+
+2) SECRET (sensitive data)  
+IMPERATIVE (kubectl does the base64 for you)
+  kubectl create secret generic db-secret --from-literal=DB_USER=admin --from-literal=DB_PASS='S3cr3t'
+  kubectl get secret db-secret -o jsonpath='{.data.DB_PASS}' | base64 -d 
+
+DECLARATIVE
+  apiVersion: v1
+  kind: Secret
+  metadata:
+    name: db-secret
+  type: Opaque
+  stringData:          
+    DB_USER: admin
+    DB_PASS: S3cr3t  
+
+3) VOLUMES  
+
+Declarative only:
+  volumes:
+  - name: cache
+    emptyDir: {}
+  containers:
+  - name: web
+    volumeMounts:
+    - name: cache
+      mountPath: /cache 
+
+4) PROBES  
+  startupProbe    did the app start?     fail = restart, other probes wait
+  readinessProbe  can it take traffic?   fail = removed from Service endpoints, NO restart
+  livenessProbe   is it alive?           fail = container restart
+
+Probes have no imperative command. Write YAML (or kubectl edit):
+  livenessProbe:
+  httpGet:
+    path: /
+    port: 80
+  initialDelaySeconds: 10
+  periodSeconds: 10
+
+  readinessProbe:
+  httpGet:
+    path: /
+    port: 80
+  periodSeconds: 5
+
+  startupProbe:
+  httpGet:
+    path: /
+    port: 80
+  initialDelaySeconds: 0
+  periodSeconds: 5
+  failureThreshold: 30
+
+initialDelaySeconds: 0 – Start checking immediately.
+periodSeconds: 5 – Check every 5 seconds.
+failureThreshold: 30 – Allow 30 consecutive failures before restarting the container.
+
+5) REQUESTS vs LIMITS
+
+IMPERATIVE
+  kubectl set resources deployment/nginx --requests=cpu=100m,memory=64Mi --limits=cpu=200m,memory=128Mi
+
+DECLARATIVE
+  resources:
+    requests: {cpu: 100m, memory: 64Mi}
+    limits:   {cpu: 200m, memory: 128Mi}

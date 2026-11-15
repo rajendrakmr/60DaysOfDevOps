@@ -1,0 +1,10 @@
+apiVersion: v1 
+metadata:
+  name: app-config
+
+data:
+  ENV: prod
+  LOG: debug
+kind: ConfigMap
+
+# kubectl create configmap app-config --from-literal=ENV=prod --from-literal=LOG=debug --dry-run=client -o yaml >config.yml
