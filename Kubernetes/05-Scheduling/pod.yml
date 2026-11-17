@@ -7,11 +7,7 @@ metadata:
     env: dev
     tier: frontend
 spec:
-  tolerations:
-    - key: "dedicated"
-      operator: "Equal"
-      value: "database"
-      effect: "NoSchedule"
+  priorityClassName: high
   containers:
   - name: nginx
     image: nginx:latest
