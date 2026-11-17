@@ -1,4 +1,5 @@
-kubectl taint nodes rm-cluster-2-worker dedicated=database:NoSchedule
+kubectl taint nodes rm-cluster-2-worker dedicated=database:NoSchedule   #add taint
+kubectl taint nodes rm-cluster-2-worker dedicated=database:NoSchedule-  #remove taint
 
 kubectl get pods -l app=prd         # select pods matching with prd label
 kubectl label pod nginx environment=prd   #add label
