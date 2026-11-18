@@ -1,0 +1,42 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: public
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  gatewayClassName: eg
+
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      allowedRoutes:
+        namespaces:
+          from: All
+
+    - name: https-www
+      protocol: HTTPS
+      port: 443
+      hostname: www.uptimelabs.in
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: www-uptimelabs-tls
+      allowedRoutes:
+        namespaces:
+          from: All
+
+    - name: https-apex
+      protocol: HTTPS
+      port: 443
+      hostname: uptimelabs.in
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: uptimelabs-tls
+      allowedRoutes:
+        namespaces:
+          from: All

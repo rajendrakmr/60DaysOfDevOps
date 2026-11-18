@@ -87,3 +87,38 @@ aws eks update-kubeconfig \
   --region eu-west-1 \
   --name clusterwitouthnode \
   --alias clusterwitouthnode
+
+<!-- helm charts for gateway class -->
+helm install eg oci://docker.io/envoyproxy/gateway-helm --version v1.10.0 -n envoy-gateway-system --create-namespace
+
+
+kubectl wait --timeout=5m -n envoy-gateway-system \
+  deployment/envoy-gateway --for=condition=Available
+
+  <!--  -->
+
+  aws cloudformation update-termination-protection --region eu-west-1 --stack-name eksctl-withnodecluster-cluster --no-enable-termination-protection
+
+  aws cloudformation delete-stack \
+  --region eu-west-1 \
+  --stack-name eksctl-withnodecluster-cluster
+
+
+  aws cloudformation wait stack-delete-complete \
+  --region eu-west-1 \
+  --stack-name eksctl-withnodecluster-cluster
+
+
+  <!-- Add ssl -->
+
+helm repo add jetstack https://charts.jetstack.io
+helm repo update
+
+helm install cert-manager jetstack/cert-manager \
+  -n cert-manager --create-namespace \
+  --set crds.enabled=true \
+  --set config.apiVersion="controller.config.cert-manager.io/v1alpha1" \
+  --set config.kind="ControllerConfiguration" \
+  --set config.enableGatewayAPI=true
+
+kubectl get pods -n cert-manager

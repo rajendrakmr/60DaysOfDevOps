@@ -1,0 +1,7 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+metadata:
+  name: rmcluster
+  region: eu-west-1
+  version: 1.37
+  

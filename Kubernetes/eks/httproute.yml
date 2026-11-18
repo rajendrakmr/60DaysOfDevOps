@@ -6,8 +6,15 @@ spec:
   parentRefs:
     - name: public
       sectionName: http
-  # hostnames: ["uptimelabs.in"]
-  rules:  
+    - name: public
+      sectionName: https-www
+    - name: public
+      sectionName: https-apex
+
+  hostnames:
+    - www.uptimelabs.in
+    - uptimelabs.in 
+  rules:
     - matches:
         - path:
             type: PathPrefix
