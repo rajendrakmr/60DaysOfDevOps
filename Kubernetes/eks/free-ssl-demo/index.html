@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free SSL Demo</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #141e30, #243b55);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            padding: 40px;
+            text-align: center;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            font-size: 32px;
+            margin-bottom: 15px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 20px 0;
+            border-radius: 30px;
+            font-weight: bold;
+            background: #16a34a;
+        }
+
+        .info {
+            margin-top: 20px;
+            line-height: 2;
+            color: #ddd;
+        }
+
+        .footer {
+            margin-top: 30px;
+            font-size: 13px;
+            color: #aaa;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>🔐 Free SSL Demo</h1>
+
+        <p>Welcome to the SSL Certificate Demo Application</p>
+
+        <div class="badge" id="ssl-status">
+            Checking SSL...
+        </div>
+
+        <div class="info">
+            <p><strong>Protocol:</strong> <span id="protocol"></span></p>
+            <p><strong>Hostname:</strong> <span id="hostname"></span></p>
+            <p><strong>SSL Status:</strong> <span id="status"></span></p>
+        </div>
+
+        <div class="footer">
+            Powered by Docker + Nginx + Kubernetes + Let's Encrypt
+        </div>
+
+    </div>
+
+    <script>
+        const isSecure = window.location.protocol === "https:";
+
+        document.getElementById("protocol").textContent =
+            window.location.protocol;
+
+        document.getElementById("hostname").textContent =
+            window.location.hostname;
+
+        document.getElementById("status").textContent =
+            isSecure ? "HTTPS Secure" : "HTTP - Not Secure";
+
+        document.getElementById("ssl-status").textContent =
+            isSecure ? "✓ SSL Enabled" : "⚠ SSL Not Enabled";
+
+        if (!isSecure) {
+            document.getElementById("ssl-status").style.background = "#dc2626";
+        }
+    </script>
+
+</body>
+</html>
