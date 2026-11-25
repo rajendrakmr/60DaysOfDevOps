@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: hellojob
+spec:
+  ttlSecondsAfterFinished: 5
+  activeDeadlineSeconds: 100
+  completions: 3
+  parallelism: 2
+  backoffLimit: 3
+  template:
+    spec:
+      containers:
+      - name: busybox
+        image: busybox
+        command: ["sh",  "-c", "echo hello dosto"]
+      restartPolicy: Never
